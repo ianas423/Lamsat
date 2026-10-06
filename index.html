@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth w-full max-w-full overflow-x-hidden">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lamsat Nadhafa - Cleaning & Hospitality Qatar</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts: Inter & Almarai for Arabic support -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Three.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0B192C',
+                        darkCard: '#1E293B',
+                        darkNavy: '#0F172A',
+                        lightBlue: '#38BDF8',
+                        cyanNeon: '#00E5FF',
+                        accentBlue: '#0284C7',
+                        lightBg: '#F8FAFC',
+                        softGray: '#E2E8F0',
+                        goldAccent: '#F59E0B'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Almarai', 'sans-serif'],
+                        arabic: ['Almarai', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        '3d-cyan': '0 10px 25px -5px rgba(56, 189, 248, 0.4), 0 0 15px rgba(0, 225, 255, 0.3)',
+                        '3d-glow': '0 0 30px rgba(56, 189, 248, 0.5)',
+                        'glass-card': '0 20px 40px rgba(0, 0, 0, 0.25)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden !important;
+            font-family: 'Inter', 'Almarai', sans-serif;
+            background-color: #0B192C;
+            color: #1E293B;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B192C;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #38BDF8;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00E5FF;
+        }
+
+        /* 3D Liquid Light Blue Button Styles */
+        .btn-liquid-3d {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.85rem 1.85rem;
+            font-weight: 700;
+            color: #0B192C;
+            background: linear-gradient(135deg, #38BDF8 0%, #00E5FF 100%);
+            border-radius: 9999px;
+            box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.8);
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+            z-index: 1;
+            white-space: nowrap;
+        }
+
+        .btn-liquid-3d::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 10%, transparent 60%);
+            transform: scale(0);
+            transition: transform 0.6s ease;
+            z-index: -1;
+        }
+
+        .btn-liquid-3d:hover::before {
+            transform: scale(1);
+        }
+
+        .btn-liquid-3d:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 18px 35px -5px rgba(0, 229, 255, 0.7), 0 0 25px rgba(56, 189, 248, 0.6);
+        }
+
+        .btn-liquid-3d:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* Secondary 3D Glass Button */
+        .btn-glass-3d {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.85rem 1.85rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            border-radius: 9999px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            white-space: nowrap;
+        }
+
+        .btn-glass-3d:hover {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: #00E5FF;
+            transform: translateY(-4px) scale(1.03);
+            color: #00E5FF;
+            box-shadow: 0 12px 25px rgba(0, 229, 255, 0.3);
+        }
+
+        /* 3D Glassmorphism Cards */
+        .glass-dark-card {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-dark-card:hover {
+            border-color: rgba(0, 229, 255, 0.6);
+            transform: translateY(-6px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.45), 0 0 25px rgba(56, 189, 248, 0.25);
+        }
+
+        .glass-light-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-light-card:hover {
+            border-color: rgba(56, 189, 248, 0.5);
+            transform: translateY(-6px);
+            box-shadow: 0 25px 50px rgba(14, 165, 233, 0.15);
+        }
+
+        /* Shimmer text effect */
+        .text-shimmer {
+            background: linear-gradient(90deg, #FFFFFF 0%, #38BDF8 50%, #00E5FF 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 4s linear infinite;
+        }
+
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        /* Floating Animation */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .animate-float {
+            animation: floatSlow 5s ease-in-out infinite;
+        }
+
+        /* Canvas particles layer */
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-lightBlue selection:text-darkBg bg-darkBg text-white w-full max-w-full overflow-x-hidden">
+
+    <!-- TOP NAVBAR -->
+    <header id="main-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-darkBg/90 backdrop-blur-md border-b border-lightBlue/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- BRANDING & CUSTOM LN LOGO SVG SLOT -->
+                <a href="#hero" class="flex items-center gap-3 group">
+                    <div class="relative w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-lightBlue via-cyanNeon to-darkNavy p-[2px] shadow-3d-cyan transition-transform group-hover:scale-105 shrink-0">
+                        <!-- Custom Inline Vector SVG Emblem Logo 'LN' -->
+                        <svg class="w-full h-full rounded-[10px] bg-darkBg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="ln-grad-primary" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#00E5FF"/>
+                                    <stop offset="50%" stop-color="#38BDF8"/>
+                                    <stop offset="100%" stop-color="#0284C7"/>
+                                </linearGradient>
+                                <linearGradient id="ln-grad-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#FCD34D"/>
+                                    <stop offset="100%" stop-color="#F59E0B"/>
+                                </linearGradient>
+                                <linearGradient id="ln-grad-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#0F172A"/>
+                                    <stop offset="100%" stop-color="#0B192C"/>
+                                </linearGradient>
+                            </defs>
+                            <rect x="6" y="6" width="108" height="108" rx="24" fill="url(#ln-grad-bg)" stroke="url(#ln-grad-primary)" stroke-width="3.5" />
+                            <rect x="12" y="12" width="96" height="96" rx="18" stroke="rgba(56, 189, 248, 0.25)" stroke-width="1.5" fill="none" />
+                            
+                            <!-- Stylized Monogram 'L' -->
+                            <path d="M 32 32 V 86 H 58 C 62 86 64 83 64 79 C 64 75 62 72 58 72 H 46 V 32 C 46 28 42 26 39 26 C 35 26 32 28 32 32 Z" fill="url(#ln-grad-primary)" />
+                            
+                            <!-- Stylized Monogram 'N' -->
+                            <path d="M 58 32 V 86 C 58 89 61 91 64 89 L 84 48 V 86 C 84 89 87 91 90 91 C 93 91 96 89 96 86 V 32 C 96 29 93 27 90 29 L 70 70 V 32 C 70 29 67 27 64 27 C 61 27 58 29 58 32 Z" fill="url(#ln-grad-primary)" />
+                            
+                            <!-- Gold Sparkle Arc Slash -->
+                            <path d="M 26 80 L 94 36" stroke="url(#ln-grad-gold)" stroke-width="3" stroke-linecap="round"/>
+                            <path d="M 94 22 L 96 28 L 102 30 L 96 32 L 94 38 L 92 32 L 86 30 L 92 28 Z" fill="url(#ln-grad-gold)" />
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="text-lg sm:text-2xl font-extrabold tracking-tight text-white block leading-none">
+                            Lamsat Nadhafa
+                        </span>
+                        <span class="text-[10px] sm:text-xs tracking-wider text-lightBlue uppercase font-bold block mt-1" data-i18n="brand-sub">
+                            Cleaning & Hospitality
+                        </span>
+                    </div>
+                </a>
+
+                <!-- DESKTOP NAVIGATION LINKS -->
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-6 text-sm font-medium">
+                    <a href="#hero" class="text-white hover:text-lightBlue transition-colors px-3 py-2 rounded-lg hover:bg-white/5" data-i18n="nav-home">Home</a>
+                    <a href="#about" class="text-gray-300 hover:text-lightBlue transition-colors px-3 py-2 rounded-lg hover:bg-white/5" data-i18n="nav-about">About Us</a>
+                    <a href="#services" class="text-gray-300 hover:text-lightBlue transition-colors px-3 py-2 rounded-lg hover:bg-white/5" data-i18n="nav-services">Services</a>
+                    <a href="#packages" class="text-gray-300 hover:text-lightBlue transition-colors px-3 py-2 rounded-lg hover:bg-white/5" data-i18n="nav-packages">Packages</a>
+                    <a href="#why-us" class="text-gray-300 hover:text-lightBlue transition-colors px-3 py-2 rounded-lg hover:bg-white/5" data-i18n="nav-work">Why Us</a>
+                    <a href="#contact" class="text-gray-300 hover:text-lightBlue transition-colors px-3 py-2 rounded-lg hover:bg-white/5" data-i18n="nav-contact">Contact</a>
+                </nav>
+
+                <!-- RIGHT HEADER ACTIONS -->
+                <div class="hidden lg:flex items-center gap-3">
+                    <!-- Phone Call Pill -->
+                    <a href="tel:+97431422856" class="flex items-center gap-2 text-xs font-semibold px-3 py-2 rounded-full bg-white/5 border border-white/10 text-gray-200 hover:border-lightBlue hover:text-lightBlue transition-all">
+                        <i class="fa-solid fa-phone text-lightBlue animate-pulse"></i>
+                        <span>+974 3142 2856</span>
+                    </a>
+
+                    <!-- Language Selector Toggle -->
+                    <button id="lang-toggle-btn" onclick="toggleLanguage()" class="flex items-center gap-1.5 px-3 py-2 text-xs font-bold rounded-xl bg-white/10 text-lightBlue border border-lightBlue/30 hover:bg-lightBlue hover:text-darkBg transition-all">
+                        <i class="fa-solid fa-globe"></i>
+                        <span id="lang-label">العربية (AR)</span>
+                    </button>
+
+                    <!-- Liquid 3D Book Now Button -->
+                    <a href="#contact" class="btn-liquid-3d text-xs uppercase tracking-wider">
+                        <i class="fa-solid fa-calendar-check mr-2"></i> <span data-i18n="btn-book-now">Book Now</span>
+                    </a>
+                </div>
+
+                <!-- MOBILE MENU BUTTON -->
+                <div class="flex items-center gap-2 md:hidden">
+                    <button onclick="toggleLanguage()" class="p-2 text-xs font-bold text-lightBlue bg-white/5 rounded-lg border border-lightBlue/30">
+                        <i class="fa-solid fa-globe"></i>
+                    </button>
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="p-2.5 text-gray-300 hover:text-lightBlue focus:outline-none rounded-xl bg-white/5 border border-white/10">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MOBILE SLIDE-OUT MENU -->
+        <div id="mobile-menu" class="hidden md:hidden bg-darkNavy/95 backdrop-blur-xl border-b border-lightBlue/20 px-6 pt-4 pb-6 transition-all duration-300 space-y-3">
+            <div class="flex items-center gap-3 pb-3 border-b border-white/10">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-lightBlue via-cyanNeon to-darkNavy p-[2px] shrink-0">
+                    <svg class="w-full h-full rounded-[9px] bg-darkBg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="6" y="6" width="108" height="108" rx="24" fill="#0B192C" stroke="#00E5FF" stroke-width="3.5" />
+                        <path d="M 32 32 V 86 H 58 C 62 86 64 83 64 79 C 64 75 62 72 58 72 H 46 V 32 Z" fill="#00E5FF" />
+                        <path d="M 58 32 V 86 L 84 48 V 86 H 96 V 32 L 70 70 V 32 Z" fill="#00E5FF" />
+                        <path d="M 26 80 L 94 36" stroke="#F59E0B" stroke-width="3" />
+                    </svg>
+                </div>
+                <div>
+                    <span class="text-base font-bold text-white block">Lamsat Nadhafa</span>
+                    <span class="text-[10px] text-lightBlue block">Qatar Cleaning & Hospitality</span>
+                </div>
+            </div>
+
+            <a href="#hero" onclick="toggleMobileMenu()" class="block py-2 text-base font-semibold text-white hover:text-lightBlue" data-i18n="nav-home">Home</a>
+            <a href="#about" onclick="toggleMobileMenu()" class="block py-2 text-base font-semibold text-gray-300 hover:text-lightBlue" data-i18n="nav-about">About Us</a>
+            <a href="#services" onclick="toggleMobileMenu()" class="block py-2 text-base font-semibold text-gray-300 hover:text-lightBlue" data-i18n="nav-services">Services</a>
+            <a href="#packages" onclick="toggleMobileMenu()" class="block py-2 text-base font-semibold text-gray-300 hover:text-lightBlue" data-i18n="nav-packages">Packages</a>
+            <a href="#why-us" onclick="toggleMobileMenu()" class="block py-2 text-base font-semibold text-gray-300 hover:text-lightBlue" data-i18n="nav-work">Why Us</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="block py-2 text-base font-semibold text-gray-300 hover:text-lightBlue" data-i18n="nav-contact">Contact</a>
+            
+            <div class="pt-4 border-t border-white/10 flex flex-col gap-3">
+                <a href="tel:+97431422856" class="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-semibold">
+                    <i class="fa-solid fa-phone text-lightBlue"></i> +974 3142 2856
+                </a>
+                <a href="#contact" onclick="toggleMobileMenu()" class="btn-liquid-3d text-center py-3">
+                    <i class="fa-solid fa-calendar-check mr-2"></i> <span data-i18n="btn-book-now">Book Now</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- SECTION 1: HERO SECTION -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-28 pb-16 overflow-hidden bg-darkBg w-full max-w-full">
+        <!-- HD Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1920&q=80" alt="Professional Cleaning Qatar" class="w-full h-full object-cover object-center opacity-20 filter contrast-125 brightness-90">
+            <div class="absolute inset-0 bg-gradient-to-b from-darkBg/90 via-darkBg/80 to-darkBg"></div>
+        </div>
+
+        <!-- Three.js Canvas Overlay -->
+        <canvas id="particle-canvas"></canvas>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center my-auto w-full">
+            
+            <!-- HERO DEDICATED BRAND LOGO CONTAINER FRAME -->
+            <div class="flex justify-center mb-6">
+                <div class="glass-dark-card p-4 rounded-3xl border-2 border-cyanNeon/50 flex items-center gap-4 shadow-3d-glow animate-float max-w-md w-full justify-center">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-lightBlue via-cyanNeon to-darkNavy p-[2.5px] shrink-0 shadow-lg">
+                        <svg class="w-full h-full rounded-[14px] bg-darkBg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="hero-ln-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#00E5FF"/>
+                                    <stop offset="100%" stop-color="#0284C7"/>
+                                </linearGradient>
+                                <linearGradient id="hero-gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#FCD34D"/>
+                                    <stop offset="100%" stop-color="#F59E0B"/>
+                                </linearGradient>
+                            </defs>
+                            <rect x="6" y="6" width="108" height="108" rx="24" fill="#0B192C" stroke="url(#hero-ln-grad)" stroke-width="4" />
+                            <path d="M 32 32 V 86 H 58 C 62 86 64 83 64 79 C 64 75 62 72 58 72 H 46 V 32 Z" fill="url(#hero-ln-grad)" />
+                            <path d="M 58 32 V 86 L 84 48 V 86 H 96 V 32 L 70 70 V 32 Z" fill="url(#hero-ln-grad)" />
+                            <path d="M 26 80 L 94 36" stroke="url(#hero-gold-grad)" stroke-width="3.5" stroke-linecap="round" />
+                            <path d="M 94 22 L 96 28 L 102 30 L 96 32 L 94 38 L 92 32 L 86 30 L 92 28 Z" fill="url(#hero-gold-grad)" />
+                        </svg>
+                    </div>
+                    <div class="text-left">
+                        <span class="text-xs uppercase tracking-widest text-cyanNeon font-bold block">Official Qatar Brand</span>
+                        <span class="text-xl font-extrabold text-white block">Lamsat Nadhafa</span>
+                        <span class="text-[11px] text-gray-300 block">لمسة نظافة للضيافة والتنظيف</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BADGE -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-lightBlue/10 border border-lightBlue/40 text-lightBlue text-xs sm:text-sm font-bold tracking-wide uppercase mb-6 shadow-3d-cyan animate-pulse">
+                <i class="fa-solid fa-award"></i>
+                <span data-i18n="hero-badge">Cleaning & Hospitality Solutions Across Qatar</span>
+            </div>
+
+            <!-- MAIN HEADING -->
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight max-w-5xl mx-auto mb-6">
+                <span class="block" data-i18n="hero-title-1">Professional Cleaning & Hospitality Services</span>
+                <span class="text-shimmer" data-i18n="hero-title-2">You Can Trust</span>
+            </h1>
+
+            <!-- SUBTITLE -->
+            <p class="text-base sm:text-xl text-gray-300 max-w-3xl mx-auto mb-10 leading-relaxed font-light" data-i18n="hero-sub">
+                Reliable residential, commercial, and hospitality solutions delivered by trained professionals across Qatar with unmatched precision and warmth.
+            </p>
+
+            <!-- ACTION BUTTONS -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-12 w-full max-w-md mx-auto sm:max-w-none">
+                <a href="#contact" class="btn-liquid-3d text-base px-8 py-4 w-full sm:w-auto">
+                    <i class="fa-solid fa-sparkles mr-2"></i>
+                    <span data-i18n="hero-btn-1">Book a Service</span>
+                </a>
+                
+                <a href="https://wa.me/97450577872?text=Hello%20Lamsat%20Nadhafa,%20I%20would%20like%20to%20inquire%20about%20your%20services." target="_blank" class="btn-glass-3d text-base px-8 py-4 w-full sm:w-auto">
+                    <i class="fa-brands fa-whatsapp text-green-400 text-xl mr-2"></i>
+                    <span data-i18n="hero-btn-2">Chat on WhatsApp (+974 5057 7872)</span>
+                </a>
+            </div>
+
+            <!-- FEATURE CHECKMARKS BAR -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto pt-6 border-t border-white/10 text-xs sm:text-sm font-semibold text-gray-200">
+                <div class="flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 border border-white/5">
+                    <i class="fa-solid fa-circle-check text-lightBlue text-base shrink-0"></i>
+                    <span data-i18n="feat-1">Trained Professionals</span>
+                </div>
+                <div class="flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 border border-white/5">
+                    <i class="fa-solid fa-clock text-lightBlue text-base shrink-0"></i>
+                    <span data-i18n="feat-2">Flexible Scheduling</span>
+                </div>
+                <div class="flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 border border-white/5">
+                    <i class="fa-solid fa-shield-halved text-lightBlue text-base shrink-0"></i>
+                    <span data-i18n="feat-3">Quality Guaranteed</span>
+                </div>
+                <div class="flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 border border-white/5">
+                    <i class="fa-solid fa-bolt text-lightBlue text-base shrink-0"></i>
+                    <span data-i18n="feat-4">Fast WhatsApp Booking</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 2: ABOUT US -->
+    <section id="about" class="py-20 bg-white text-gray-800 relative overflow-hidden w-full max-w-full">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- LEFT VISUAL CONTAINER (SAFELY BOUNDED TO PREVENT HORIZONTAL OVERFLOW) -->
+                <div class="lg:col-span-6 relative w-full overflow-hidden p-2">
+                    <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-slate-100 group">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" alt="Lamsat Nadhafa Luxury Interior Cleaning" class="w-full h-[380px] sm:h-[420px] object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-darkBg/60 via-transparent to-transparent"></div>
+                    </div>
+
+                    <!-- Floating Badge Inside Container -->
+                    <div class="absolute top-6 left-6 bg-darkBg text-white p-4 rounded-2xl shadow-xl border border-lightBlue/40 flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-lightBlue text-darkBg flex items-center justify-center font-black text-lg">
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold">100% Reliable</div>
+                            <div class="text-xs text-lightBlue">Qatar's Premier Team</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT CONTENT: Info & Stats Grid -->
+                <div class="lg:col-span-6 space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-lightBlue/10 text-accentBlue font-bold text-xs uppercase tracking-wider">
+                        <i class="fa-solid fa-shield-heart"></i>
+                        <span data-i18n="about-tag">About Lamsat Nadhafa</span>
+                    </div>
+
+                    <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 leading-tight" data-i18n="about-title">
+                        Reliable Support for Homes, Businesses, and Hospitality Operations
+                    </h2>
+
+                    <p class="text-slate-600 leading-relaxed font-normal text-sm sm:text-base" data-i18n="about-desc">
+                        Lamsat Nadhafa Cleaning provides flexible service solutions for homes, apartments, villas, offices, commercial properties, hotels, restaurants, cafés, and events across Qatar. Our focus is simple: dependable staff, clear communication, convenient scheduling, and service planned specifically around your unique requirements.
+                    </p>
+
+                    <!-- 3D STATS COUNTER GRID -->
+                    <div class="grid grid-cols-2 gap-4 pt-2">
+                        <div class="glass-light-card p-4 sm:p-5 rounded-2xl border border-slate-200">
+                            <div class="text-2xl sm:text-3xl font-black text-accentBlue mb-1 flex items-center gap-1">
+                                <span class="counter" data-target="1500">0</span>+
+                            </div>
+                            <div class="font-bold text-slate-800 text-xs sm:text-sm" data-i18n="stat-1-title">Skilled Team</div>
+                            <div class="text-[11px] text-slate-500" data-i18n="stat-1-sub">Experienced & vetted staff</div>
+                        </div>
+
+                        <div class="glass-light-card p-4 sm:p-5 rounded-2xl border border-slate-200">
+                            <div class="text-2xl sm:text-3xl font-black text-accentBlue mb-1 flex items-center gap-1">
+                                <span class="counter" data-target="100">0</span>%
+                            </div>
+                            <div class="font-bold text-slate-800 text-xs sm:text-sm" data-i18n="stat-2-title">Flexible Booking</div>
+                            <div class="text-[11px] text-slate-500" data-i18n="stat-2-sub">Custom schedules & plans</div>
+                        </div>
+
+                        <div class="glass-light-card p-4 sm:p-5 rounded-2xl border border-slate-200">
+                            <div class="text-2xl sm:text-3xl font-black text-accentBlue mb-1 flex items-center gap-1">
+                                <span class="counter" data-target="24">0</span>/7
+                            </div>
+                            <div class="font-bold text-slate-800 text-xs sm:text-sm" data-i18n="stat-3-title">Customer Support</div>
+                            <div class="text-[11px] text-slate-500" data-i18n="stat-3-sub">Helpful & responsive</div>
+                        </div>
+
+                        <div class="glass-light-card p-4 sm:p-5 rounded-2xl border border-slate-200">
+                            <div class="text-2xl sm:text-3xl font-black text-accentBlue mb-1 flex items-center gap-1">
+                                <span class="counter" data-target="50">0</span>+
+                            </div>
+                            <div class="font-bold text-slate-800 text-xs sm:text-sm" data-i18n="stat-4-title">Multiple Services</div>
+                            <div class="text-[11px] text-slate-500" data-i18n="stat-4-sub">All-in-one cleaning care</div>
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <a href="#services" class="inline-flex items-center gap-2 font-bold text-accentBlue hover:text-darkBg transition-colors group text-sm">
+                            <span data-i18n="about-more">Learn More About Our Operations</span>
+                            <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 3: OUR SERVICES -->
+    <section id="services" class="py-20 bg-darkBg text-white relative w-full max-w-full overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-lightBlue/10 text-lightBlue font-bold text-xs uppercase tracking-wider mb-3">
+                    <i class="fa-solid fa-broom-ball"></i>
+                    <span data-i18n="serv-tag">Our Services</span>
+                </div>
+                <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight" data-i18n="serv-title">
+                    Professional Solutions for Every Cleaning & Hospitality Need
+                </h2>
+                <p class="mt-4 text-gray-400 text-sm sm:text-base" data-i18n="serv-sub">
+                    Explore our specialized core services, tailored for high standards across residences and commercial establishments in Qatar.
+                </p>
+            </div>
+
+            <!-- ALTERNATING LEFT-RIGHT ZIG-ZAG 3D CARDS LAYOUT -->
+            <div class="space-y-12">
+                
+                <!-- CARD 1: HOME CLEANING -->
+                <div class="glass-dark-card rounded-3xl overflow-hidden grid grid-cols-1 md:grid-cols-12 items-center">
+                    <div class="md:col-span-6 h-60 md:h-full min-h-[260px] relative overflow-hidden group">
+                        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80" alt="Home Cleaning" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 left-4 bg-lightBlue text-darkBg text-xs font-black px-3 py-1.5 rounded-full uppercase">Residential</div>
+                    </div>
+                    <div class="md:col-span-6 p-6 sm:p-10 space-y-4">
+                        <div class="w-12 h-12 rounded-2xl bg-lightBlue/20 border border-lightBlue/40 flex items-center justify-center text-lightBlue text-2xl">
+                            <i class="fa-solid fa-house-chimney"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Home Cleaning</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Regular and one-time comprehensive cleaning for comfortable, pristine, and well-maintained homes across Qatar.
+                        </p>
+                        <ul class="space-y-2 text-xs text-gray-400 pt-1">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lightBlue"></i> Dusting, vacuuming & deep floor mopping</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lightBlue"></i> Kitchen sanitization & bathroom cleaning</li>
+                        </ul>
+                        <div class="pt-2">
+                            <button onclick="openServiceModal('Home Cleaning', 'Regular and one-time cleaning designed for private residences. Includes dusting, surface polishing, floor care, kitchen sanitization, and deep bathroom cleansing.')" class="btn-liquid-3d text-xs">
+                                <span>View Service Details</span> <i class="fa-solid fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 2: APARTMENT CLEANING -->
+                <div class="glass-dark-card rounded-3xl overflow-hidden grid grid-cols-1 md:grid-cols-12 items-center">
+                    <div class="md:col-span-6 p-6 sm:p-10 space-y-4 md:order-1 order-2">
+                        <div class="w-12 h-12 rounded-2xl bg-lightBlue/20 border border-lightBlue/40 flex items-center justify-center text-lightBlue text-2xl">
+                            <i class="fa-solid fa-building"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Apartment Cleaning</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Flexible cleaning support designed specifically for studios, flats, high-rise apartments, and penthouses.
+                        </p>
+                        <ul class="space-y-2 text-xs text-gray-400 pt-1">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lightBlue"></i> Ideal for busy professionals & families</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lightBlue"></i> Quick turnarounds with eco-friendly supplies</li>
+                        </ul>
+                        <div class="pt-2">
+                            <button onclick="openServiceModal('Apartment Cleaning', 'Specialized apartment cleaning solutions covering high-rise residential towers in West Bay, Pearl Qatar, and Lusail. Spotless living space guaranteed.')" class="btn-liquid-3d text-xs">
+                                <span>View Service Details</span> <i class="fa-solid fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="md:col-span-6 h-60 md:h-full min-h-[260px] relative overflow-hidden group md:order-2 order-1">
+                        <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80" alt="Apartment Cleaning" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 right-4 bg-cyanNeon text-darkBg text-xs font-black px-3 py-1.5 rounded-full uppercase">Flats & Penthouses</div>
+                    </div>
+                </div>
+
+                <!-- CARD 3: VILLA CLEANING -->
+                <div class="glass-dark-card rounded-3xl overflow-hidden grid grid-cols-1 md:grid-cols-12 items-center">
+                    <div class="md:col-span-6 h-60 md:h-full min-h-[260px] relative overflow-hidden group">
+                        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80" alt="Villa Cleaning" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 left-4 bg-lightBlue text-darkBg text-xs font-black px-3 py-1.5 rounded-full uppercase">Luxury Estates</div>
+                    </div>
+                    <div class="md:col-span-6 p-6 sm:p-10 space-y-4">
+                        <div class="w-12 h-12 rounded-2xl bg-lightBlue/20 border border-lightBlue/40 flex items-center justify-center text-lightBlue text-2xl">
+                            <i class="fa-solid fa-vihara"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Villa Cleaning</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Detailed, large-scale cleaning plans for multi-story villas, indoor living spaces, majlis areas, and compound estates.
+                        </p>
+                        <ul class="space-y-2 text-xs text-gray-400 pt-1">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lightBlue"></i> Dedicated team leader & multi-cleaner squads</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lightBlue"></i> Comprehensive room-by-room thorough care</li>
+                        </ul>
+                        <div class="pt-2">
+                            <button onclick="openServiceModal('Villa Cleaning', 'Heavy-duty and thorough cleaning for expansive villas across Al Rayyan, Pearl Qatar, and Doha suburbs. Multi-member cleaning teams dispatched.')" class="btn-liquid-3d text-xs">
+                                <span>View Service Details</span> <i class="fa-solid fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 4: OFFICE CLEANING -->
+                <div class="glass-dark-card rounded-3xl overflow-hidden grid grid-cols-1 md:grid-cols-12 items-center">
+                    <div class="md:col-span-6 p-6 sm:p-10 space-y-4 md:order-1 order-2">
+                        <div class="w-12 h-12 rounded-2xl bg-lightBlue/20 border border-lightBlue/40 flex items-center justify-center text-lightBlue text-2xl">
+                            <i class="fa-solid fa-briefcase"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Office Cleaning</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Professional workplace cleaning schedules designed carefully around your operational business hours.
+                        </p>
+                        <ul class="space-y-2 text-xs text-gray-400 pt-1">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lightBlue"></i> Desk, screen & workstation sanitation</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lightBlue"></i> Meeting room readiness & waste management</li>
+                        </ul>
+                        <div class="pt-2">
+                            <button onclick="openServiceModal('Office Cleaning', 'Maintain a healthy, pristine workplace for your staff and corporate clients. Flexible morning, evening, or night shift schedules available.')" class="btn-liquid-3d text-xs">
+                                <span>View Service Details</span> <i class="fa-solid fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="md:col-span-6 h-60 md:h-full min-h-[260px] relative overflow-hidden group md:order-2 order-1">
+                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80" alt="Office Cleaning" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 right-4 bg-cyanNeon text-darkBg text-xs font-black px-3 py-1.5 rounded-full uppercase">Corporate</div>
+                    </div>
+                </div>
+
+                <!-- CARD 5: COMMERCIAL & HOSPITALITY -->
+                <div class="glass-dark-card rounded-3xl overflow-hidden grid grid-cols-1 md:grid-cols-12 items-center">
+                    <div class="md:col-span-6 h-60 md:h-full min-h-[260px] relative overflow-hidden group">
+                        <img src="https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=800&q=80" alt="Commercial Cleaning" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 left-4 bg-lightBlue text-darkBg text-xs font-black px-3 py-1.5 rounded-full uppercase">Commercial</div>
+                    </div>
+                    <div class="md:col-span-6 p-6 sm:p-10 space-y-4">
+                        <div class="w-12 h-12 rounded-2xl bg-lightBlue/20 border border-lightBlue/40 flex items-center justify-center text-lightBlue text-2xl">
+                            <i class="fa-solid fa-store"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Commercial & Hospitality</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Full cleaning and hospitality staff solutions for retail shops, cafes, restaurants, hotels, and event spaces.
+                        </p>
+                        <ul class="space-y-2 text-xs text-gray-400 pt-1">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lightBlue"></i> Trained waitstaff, cleaners & dishwashers</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lightBlue"></i> High customer traffic hygiene standards</li>
+                        </ul>
+                        <div class="pt-2">
+                            <button onclick="openServiceModal('Commercial & Hospitality Cleaning', 'Tailored for food & beverage outlets, retail stores, and event organizers requiring reliable cleaning crew and hospitality support.')" class="btn-liquid-3d text-xs">
+                                <span>View Service Details</span> <i class="fa-solid fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 6: DEEP CLEANING CARE -->
+                <div class="glass-dark-card rounded-3xl overflow-hidden grid grid-cols-1 md:grid-cols-12 items-center">
+                    <div class="md:col-span-6 p-6 sm:p-10 space-y-4 md:order-1 order-2">
+                        <div class="w-12 h-12 rounded-2xl bg-lightBlue/20 border border-lightBlue/40 flex items-center justify-center text-lightBlue text-2xl">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Deep Cleaning Care</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Thorough attention to high-use areas, tough surfaces, tile scrubbing, appliances, and deep sanitization.
+                        </p>
+                        <ul class="space-y-2 text-xs text-gray-400 pt-1">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lightBlue"></i> Post-construction & move-in/out specialty</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lightBlue"></i> Steam cleaning & tile grout scrub</li>
+                        </ul>
+                        <div class="pt-2">
+                            <button onclick="openServiceModal('Deep Cleaning Care', 'Heavy deep sanitization removing grime, tough stains, and dust from every nook and corner of your property using advanced industrial tools.')" class="btn-liquid-3d text-xs">
+                                <span>View Service Details</span> <i class="fa-solid fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="md:col-span-6 h-60 md:h-full min-h-[260px] relative overflow-hidden group md:order-2 order-1">
+                        <img src="https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?auto=format&fit=crop&w=800&q=80" alt="Deep Cleaning" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 right-4 bg-cyanNeon text-darkBg text-xs font-black px-3 py-1.5 rounded-full uppercase">Intensive Care</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 4: WHY CHOOSE US -->
+    <section id="why-us" class="py-20 bg-lightBg text-slate-900 relative w-full max-w-full overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-lightBlue/10 text-accentBlue font-bold text-xs uppercase tracking-wider mb-3">
+                    <i class="fa-solid fa-circle-nodes"></i>
+                    <span data-i18n="why-tag">Why Choose Us</span>
+                </div>
+                <h2 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight" data-i18n="why-title">
+                    Service Planned Around Your Space, Schedule & Priorities
+                </h2>
+                <p class="mt-4 text-slate-600 text-sm sm:text-base" data-i18n="why-sub">
+                    We combine trained expertise, punctual logistics, and effortless communication to give you complete peace of mind.
+                </p>
+            </div>
+
+            <!-- 4 CARDS WITH GLOWING NUMBERS -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <div class="glass-light-card p-6 rounded-3xl border border-slate-200 relative group overflow-hidden">
+                    <div class="text-5xl font-black text-lightBlue/30 group-hover:text-accentBlue transition-colors duration-300 mb-3">01</div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Trained Staff</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed">
+                        Every team member undergoes background checks and specialized training assigned specifically based on your cleaning requirements.
+                    </p>
+                </div>
+
+                <div class="glass-light-card p-6 rounded-3xl border border-slate-200 relative group overflow-hidden">
+                    <div class="text-5xl font-black text-lightBlue/30 group-hover:text-accentBlue transition-colors duration-300 mb-3">02</div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Reliable & Punctual</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed">
+                        Clear scheduling, real-time arrival tracking, and dependable communication prior to every single scheduled visit.
+                    </p>
+                </div>
+
+                <div class="glass-light-card p-6 rounded-3xl border border-slate-200 relative group overflow-hidden">
+                    <div class="text-5xl font-black text-lightBlue/30 group-hover:text-accentBlue transition-colors duration-300 mb-3">03</div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Flexible Booking</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed">
+                        Select one-time cleaning, weekly visits, or recurring corporate contracts built around your convenience.
+                    </p>
+                </div>
+
+                <div class="glass-light-card p-6 rounded-3xl border border-slate-200 relative group overflow-hidden">
+                    <div class="text-5xl font-black text-lightBlue/30 group-hover:text-accentBlue transition-colors duration-300 mb-3">04</div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Instant WhatsApp</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed">
+                        Send full booking requirements quickly and receive direct human confirmation without long automated phone hold times.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 5: PACKAGES & DYNAMIC BUILDER -->
+    <section id="packages" class="py-20 bg-darkBg text-white relative w-full max-w-full overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-lightBlue/10 text-lightBlue font-bold text-xs uppercase tracking-wider mb-3">
+                    <i class="fa-solid fa-box-open"></i>
+                    <span data-i18n="pack-tag">Recurring Packages</span>
+                </div>
+                <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight" data-i18n="pack-title">
+                    Weekly, Monthly & Custom Cleaning Packages
+                </h2>
+                <p class="mt-4 text-gray-400 text-sm sm:text-base" data-i18n="pack-sub">
+                    Choose a ready-made plan or construct a completely dynamic package based on visits, hours, and staff required.
+                </p>
+            </div>
+
+            <!-- INTERACTIVE TABS SELECTOR -->
+            <div class="flex justify-center mb-10 w-full overflow-x-auto pb-2">
+                <div class="inline-flex p-1.5 rounded-2xl bg-darkCard border border-lightBlue/20 text-xs sm:text-sm font-semibold shrink-0">
+                    <button onclick="switchPackageTab('weekly')" id="tab-weekly" class="px-5 py-2.5 rounded-xl transition-all text-darkBg bg-lightBlue font-bold shadow-lg">Weekly</button>
+                    <button onclick="switchPackageTab('monthly')" id="tab-monthly" class="px-5 py-2.5 rounded-xl transition-all text-gray-300 hover:text-white">Monthly</button>
+                    <button onclick="switchPackageTab('builder')" id="tab-builder" class="px-5 py-2.5 rounded-xl transition-all text-gray-300 hover:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-cyanNeon"></i> Build Custom Plan
+                    </button>
+                </div>
+            </div>
+
+            <!-- READY-MADE PACKAGES GRID (WEEKLY / MONTHLY) -->
+            <div id="packages-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- BASIC PACKAGE -->
+                <div class="glass-dark-card p-6 sm:p-8 rounded-3xl border border-lightBlue/20 flex flex-col justify-between">
+                    <div>
+                        <div class="text-lightBlue font-bold text-xs uppercase tracking-wider mb-2">Essential</div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Standard Plan</h3>
+                        <p class="text-gray-400 text-xs mb-6">Perfect for small apartments and studio units.</p>
+                        <div class="text-3xl sm:text-4xl font-black text-white mb-6">
+                            <span id="price-basic">QAR 180</span> <span class="text-xs text-gray-400 font-normal">/ period</span>
+                        </div>
+                        <ul class="space-y-3 text-xs sm:text-sm text-gray-300 mb-8">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lightBlue"></i> 1 Visit per week (4 Hours)</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lightBlue"></i> 1 Professional Cleaner</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lightBlue"></i> Standard Cleaning Equipment</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lightBlue"></i> Key surface dusting & sanitation</li>
+                        </ul>
+                    </div>
+                    <a href="#contact" class="btn-glass-3d w-full text-center text-xs sm:text-sm">Select Standard</a>
+                </div>
+
+                <!-- POPULAR PACKAGE -->
+                <div class="glass-dark-card p-6 sm:p-8 rounded-3xl border-2 border-lightBlue relative flex flex-col justify-between shadow-3d-glow">
+                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-lightBlue to-cyanNeon text-darkBg font-black text-[10px] sm:text-xs px-4 py-1 rounded-full uppercase shadow-md whitespace-nowrap">
+                        Most Popular
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-cyanNeon font-bold text-xs uppercase tracking-wider mb-2">Recommended</div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Family Villa Plan</h3>
+                        <p class="text-gray-400 text-xs mb-6">Designed for busy households and spacious villas.</p>
+                        <div class="text-3xl sm:text-4xl font-black text-white mb-6">
+                            <span id="price-family">QAR 450</span> <span class="text-xs text-gray-400 font-normal">/ period</span>
+                        </div>
+                        <ul class="space-y-3 text-xs sm:text-sm text-gray-300 mb-8">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyanNeon"></i> 3 Visits per week (4 Hours each)</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyanNeon"></i> Dedicated Cleaning Staff</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyanNeon"></i> Deep kitchen & bath care</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyanNeon"></i> Laundry & ironing support included</li>
+                        </ul>
+                    </div>
+                    <a href="#contact" class="btn-liquid-3d w-full text-center text-xs sm:text-sm">Book Family Plan</a>
+                </div>
+
+                <!-- PREMIUM PACKAGE -->
+                <div class="glass-dark-card p-6 sm:p-8 rounded-3xl border border-lightBlue/20 flex flex-col justify-between">
+                    <div>
+                        <div class="text-lightBlue font-bold text-xs uppercase tracking-wider mb-2">Executive</div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Corporate & Luxury</h3>
+                        <p class="text-gray-400 text-xs mb-6">Daily upkeep for luxury estates and offices.</p>
+                        <div class="text-3xl sm:text-4xl font-black text-white mb-6">
+                            <span id="price-luxury">QAR 950</span> <span class="text-xs text-gray-400 font-normal">/ period</span>
+                        </div>
+                        <ul class="space-y-3 text-xs sm:text-sm text-gray-300 mb-8">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lightBlue"></i> 5 Visits per week (Full day options)</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lightBlue"></i> 2 Cleaners + Supervisor</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lightBlue"></i> Full materials & eco-chemicals provided</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lightBlue"></i> VIP Hospitality support</li>
+                        </ul>
+                    </div>
+                    <a href="#contact" class="btn-glass-3d w-full text-center text-xs sm:text-sm">Select Executive</a>
+                </div>
+
+            </div>
+
+            <!-- DYNAMIC CUSTOM PACKAGE BUILDER CONTAINER -->
+            <div id="builder-container" class="hidden glass-dark-card p-6 sm:p-10 rounded-3xl border border-cyanNeon/40 max-w-4xl mx-auto space-y-8">
+                <div class="text-center">
+                    <h3 class="text-xl sm:text-2xl font-bold text-white mb-2">Build Your Custom Package</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm">Adjust the sliders below to calculate instant estimated monthly pricing.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Slider 1: Visits per week -->
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-xs sm:text-sm font-semibold">
+                            <span class="text-gray-300">Visits Per Week:</span>
+                            <span id="val-visits" class="text-cyanNeon font-bold">3 Visits</span>
+                        </div>
+                        <input type="range" id="input-visits" min="1" max="7" value="3" oninput="updateCustomPackage()" class="w-full accent-lightBlue cursor-pointer">
+                    </div>
+
+                    <!-- Slider 2: Hours per visit -->
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-xs sm:text-sm font-semibold">
+                            <span class="text-gray-300">Hours Per Visit:</span>
+                            <span id="val-hours" class="text-cyanNeon font-bold">4 Hours</span>
+                        </div>
+                        <input type="range" id="input-hours" min="2" max="8" value="4" oninput="updateCustomPackage()" class="w-full accent-lightBlue cursor-pointer">
+                    </div>
+
+                    <!-- Slider 3: Staff Count -->
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-xs sm:text-sm font-semibold">
+                            <span class="text-gray-300">Staff Count:</span>
+                            <span id="val-staff" class="text-cyanNeon font-bold">1 Cleaner</span>
+                        </div>
+                        <input type="range" id="input-staff" min="1" max="5" value="1" oninput="updateCustomPackage()" class="w-full accent-lightBlue cursor-pointer">
+                    </div>
+                </div>
+
+                <!-- Live Dynamic Calculation Box -->
+                <div class="p-5 sm:p-6 rounded-2xl bg-darkNavy/90 border border-lightBlue/30 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div>
+                        <div class="text-[11px] text-gray-400 uppercase font-semibold">Calculated Estimated Price</div>
+                        <div class="text-3xl sm:text-4xl font-black text-cyanNeon" id="calculated-price">QAR 1,440 <span class="text-xs sm:text-sm text-gray-400 font-normal">/ month</span></div>
+                    </div>
+                    <button onclick="bookCustomPackage()" class="btn-liquid-3d text-xs sm:text-sm px-6 py-3 w-full md:w-auto">
+                        <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Book This Custom Plan
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 6: 4-STEP BOOKING -->
+    <section class="py-20 bg-white text-slate-900 relative w-full max-w-full overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-lightBlue/10 text-accentBlue font-bold text-xs uppercase tracking-wider mb-3">
+                    <i class="fa-solid fa-list-ol"></i>
+                    <span data-i18n="step-tag">Simple Process</span>
+                </div>
+                <h2 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight" data-i18n="step-title">
+                    Book Your Cleaning Service in 4 Simple Steps
+                </h2>
+                <p class="mt-4 text-slate-600 text-sm sm:text-base" data-i18n="step-sub">
+                    Your request is formatted automatically and sent directly to our WhatsApp booking desk for instant confirmation.
+                </p>
+            </div>
+
+            <!-- STEP GRID -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <div class="glass-light-card p-6 rounded-3xl border border-slate-200 text-center">
+                    <div class="w-14 h-14 rounded-2xl bg-accentBlue text-white text-xl font-black mx-auto flex items-center justify-center mb-4 shadow-md">1</div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Choose Service</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed">Select the specialized cleaning or hospitality support category you require.</p>
+                </div>
+
+                <div class="glass-light-card p-6 rounded-3xl border border-slate-200 text-center">
+                    <div class="w-14 h-14 rounded-2xl bg-accentBlue text-white text-xl font-black mx-auto flex items-center justify-center mb-4 shadow-md">2</div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Add Your Details</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed">Specify your location in Qatar, preferred date, time slot, and special requests.</p>
+                </div>
+
+                <div class="glass-light-card p-6 rounded-3xl border border-slate-200 text-center">
+                    <div class="w-14 h-14 rounded-2xl bg-accentBlue text-white text-xl font-black mx-auto flex items-center justify-center mb-4 shadow-md">3</div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Send on WhatsApp</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed">The interactive system formats your request into WhatsApp automatically.</p>
+                </div>
+
+                <div class="glass-light-card p-6 rounded-3xl border border-slate-200 text-center">
+                    <div class="w-14 h-14 rounded-2xl bg-accentBlue text-white text-xl font-black mx-auto flex items-center justify-center mb-4 shadow-md">4</div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Get Confirmation</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed">Our representative confirms staff availability and details with you immediately.</p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 7: CONTACT & FAST WHATSAPP BOOKING -->
+    <section id="contact" class="py-20 bg-darkBg text-white relative w-full max-w-full overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+                
+                <!-- CONTACT INFORMATION CARDS -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-lightBlue/10 text-lightBlue font-bold text-xs uppercase tracking-wider mb-3">
+                            <i class="fa-solid fa-headset"></i>
+                            <span data-i18n="contact-tag">Get In Touch</span>
+                        </div>
+                        <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight" data-i18n="contact-title">
+                            Speak with Our Dispatch Team Directly
+                        </h2>
+                        <p class="mt-3 text-gray-400 text-xs sm:text-sm leading-relaxed" data-i18n="contact-sub">
+                            For availability, custom event packages, commercial quotations, or recurring services across Qatar, reach out anytime.
+                        </p>
+                    </div>
+
+                    <!-- CONTACT CARDS -->
+                    <div class="space-y-3">
+                        <a href="tel:+97431422856" class="glass-dark-card p-4 sm:p-5 rounded-2xl flex items-center gap-4 block hover:border-lightBlue">
+                            <div class="w-11 h-11 rounded-xl bg-lightBlue/20 text-lightBlue flex items-center justify-center text-lg shrink-0">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <div class="text-[11px] text-gray-400">Call Dispatch Line 1</div>
+                                <div class="text-base sm:text-lg font-bold text-white">+974 3142 2856</div>
+                            </div>
+                        </a>
+
+                        <a href="tel:+97470628836" class="glass-dark-card p-4 sm:p-5 rounded-2xl flex items-center gap-4 block hover:border-lightBlue">
+                            <div class="w-11 h-11 rounded-xl bg-lightBlue/20 text-lightBlue flex items-center justify-center text-lg shrink-0">
+                                <i class="fa-solid fa-phone-volume"></i>
+                            </div>
+                            <div>
+                                <div class="text-[11px] text-gray-400">Call Dispatch Line 2</div>
+                                <div class="text-base sm:text-lg font-bold text-white">+974 7062 8836</div>
+                            </div>
+                        </a>
+
+                        <a href="https://wa.me/97450577872" target="_blank" class="glass-dark-card p-4 sm:p-5 rounded-2xl flex items-center gap-4 block hover:border-green-400">
+                            <div class="w-11 h-11 rounded-xl bg-green-500/20 text-green-400 flex items-center justify-center text-lg shrink-0">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <div class="text-[11px] text-gray-400">WhatsApp Official Desk</div>
+                                <div class="text-base sm:text-lg font-bold text-green-400">+974 5057 7872</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- INTERACTIVE WHATSAPP BOOKING FORM -->
+                <div class="lg:col-span-7 glass-dark-card p-6 sm:p-10 rounded-3xl border border-lightBlue/30 shadow-2xl">
+                    <h3 class="text-xl sm:text-2xl font-bold text-white mb-2">Instant Booking Request</h3>
+                    <p class="text-gray-400 text-xs mb-6">Fill in your details below. The system will format a clear WhatsApp message for instant dispatch.</p>
+
+                    <form id="whatsapp-form" onsubmit="handleWhatsAppSubmit(event)" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 mb-1">Your Full Name</label>
+                                <input type="text" id="form-name" required placeholder="e.g. Abdullah Al-Thani" class="w-full px-4 py-3 rounded-xl bg-darkNavy border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-lightBlue text-xs sm:text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 mb-1">Contact Phone</label>
+                                <input type="tel" id="form-phone" required placeholder="+974 XXXX XXXX" class="w-full px-4 py-3 rounded-xl bg-darkNavy border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-lightBlue text-xs sm:text-sm">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 mb-1">Service Required</label>
+                                <select id="form-service" class="w-full px-4 py-3 rounded-xl bg-darkNavy border border-white/10 text-white focus:outline-none focus:border-lightBlue text-xs sm:text-sm">
+                                    <option value="Home Cleaning">Home Cleaning</option>
+                                    <option value="Apartment Cleaning">Apartment Cleaning</option>
+                                    <option value="Villa Cleaning">Villa Cleaning</option>
+                                    <option value="Office Cleaning">Office Cleaning</option>
+                                    <option value="Commercial & Hospitality">Commercial & Hospitality</option>
+                                    <option value="Deep Cleaning Care">Deep Cleaning Care</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 mb-1">Location in Qatar</label>
+                                <input type="text" id="form-location" required placeholder="e.g. West Bay / Pearl / Lusail" class="w-full px-4 py-3 rounded-xl bg-darkNavy border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-lightBlue text-xs sm:text-sm">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 mb-1">Preferred Date</label>
+                                <input type="date" id="form-date" required class="w-full px-4 py-3 rounded-xl bg-darkNavy border border-white/10 text-white focus:outline-none focus:border-lightBlue text-xs sm:text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 mb-1">Preferred Time</label>
+                                <select id="form-time" class="w-full px-4 py-3 rounded-xl bg-darkNavy border border-white/10 text-white focus:outline-none focus:border-lightBlue text-xs sm:text-sm">
+                                    <option value="Morning (8:00 AM - 12:00 PM)">Morning (8:00 AM - 12:00 PM)</option>
+                                    <option value="Afternoon (1:00 PM - 5:00 PM)">Afternoon (1:00 PM - 5:00 PM)</option>
+                                    <option value="Evening (6:00 PM - 10:00 PM)">Evening (6:00 PM - 10:00 PM)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Additional Requirements / Notes</label>
+                            <textarea id="form-notes" rows="3" placeholder="Tell us specific details like number of rooms, materials needed, etc." class="w-full px-4 py-3 rounded-xl bg-darkNavy border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-lightBlue text-xs sm:text-sm"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-liquid-3d w-full py-4 text-sm sm:text-base mt-2">
+                            <i class="fa-brands fa-whatsapp text-xl mr-2"></i> Send Booking via WhatsApp
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-darkNavy border-t border-lightBlue/20 pt-16 pb-12 text-gray-400 text-xs sm:text-sm w-full max-w-full overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 mb-12">
+                
+                <!-- BRAND INFO WITH VECTOR LOGO -->
+                <div class="lg:col-span-4 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-lightBlue via-cyanNeon to-darkNavy p-[2px] shrink-0">
+                            <svg class="w-full h-full rounded-[9px] bg-darkBg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="6" y="6" width="108" height="108" rx="24" fill="#0B192C" stroke="#00E5FF" stroke-width="3.5" />
+                                <path d="M 32 32 V 86 H 58 C 62 86 64 83 64 79 C 64 75 62 72 58 72 H 46 V 32 Z" fill="#00E5FF" />
+                                <path d="M 58 32 V 86 L 84 48 V 86 H 96 V 32 L 70 70 V 32 Z" fill="#00E5FF" />
+                                <path d="M 26 80 L 94 36" stroke="#F59E0B" stroke-width="3" />
+                            </svg>
+                        </div>
+                        <span class="text-lg font-extrabold text-white">Lamsat Nadhafa</span>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Professional cleaning and hospitality support for homes, apartments, villas, corporate offices, and hospitality operations across Qatar.
+                    </p>
+                    <div class="text-xs text-lightBlue font-semibold flex items-center gap-2">
+                        <i class="fa-solid fa-location-dot"></i> Doha, State of Qatar
+                    </div>
+                </div>
+
+                <!-- QUICK LINKS -->
+                <div class="lg:col-span-2 space-y-3">
+                    <div class="text-white font-bold text-sm sm:text-base mb-2">Quick Links</div>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#hero" class="hover:text-lightBlue transition-colors">Home</a></li>
+                        <li><a href="#about" class="hover:text-lightBlue transition-colors">About Us</a></li>
+                        <li><a href="#services" class="hover:text-lightBlue transition-colors">Our Services</a></li>
+                        <li><a href="#packages" class="hover:text-lightBlue transition-colors">Packages</a></li>
+                        <li><a href="#contact" class="hover:text-lightBlue transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- MAIN SERVICES -->
+                <div class="lg:col-span-3 space-y-3">
+                    <div class="text-white font-bold text-sm sm:text-base mb-2">Main Services</div>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#services" class="hover:text-lightBlue transition-colors">Home Cleaning</a></li>
+                        <li><a href="#services" class="hover:text-lightBlue transition-colors">Apartment Cleaning</a></li>
+                        <li><a href="#services" class="hover:text-lightBlue transition-colors">Villa Cleaning Solutions</a></li>
+                        <li><a href="#services" class="hover:text-lightBlue transition-colors">Office & Corporate Care</a></li>
+                        <li><a href="#services" class="hover:text-lightBlue transition-colors">Deep Sanitization</a></li>
+                    </ul>
+                </div>
+
+                <!-- SOCIAL & CONTACT -->
+                <div class="lg:col-span-3 space-y-4">
+                    <div class="text-white font-bold text-sm sm:text-base mb-2">Follow Us</div>
+                    <p class="text-xs">Connect with us on official social media platforms:</p>
+                    
+                    <div class="flex items-center gap-3">
+                        <a href="#" class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:text-lightBlue hover:border-lightBlue transition-all">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:text-lightBlue hover:border-lightBlue transition-all">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:text-lightBlue hover:border-lightBlue transition-all">
+                            <i class="fa-brands fa-snapchat"></i>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:text-lightBlue hover:border-lightBlue transition-all">
+                            <i class="fa-brands fa-tiktok"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- COPYRIGHT BAR -->
+            <div class="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+                <div>
+                    © 2026 <span class="text-white font-bold">Lamsat Nadhafa Cleaning</span>. All rights reserved.
+                </div>
+                <div class="text-gray-400">
+                    State of Qatar
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- SERVICE DETAILS MODAL -->
+    <div id="service-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="glass-dark-card p-6 sm:p-8 rounded-3xl max-w-lg w-full border border-lightBlue/40 space-y-4 relative animate-float">
+            <button onclick="closeServiceModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="w-12 h-12 rounded-2xl bg-lightBlue/20 text-lightBlue flex items-center justify-center text-2xl">
+                <i class="fa-solid fa-sparkles"></i>
+            </div>
+            <h3 id="modal-title" class="text-2xl font-bold text-white">Service Detail</h3>
+            <p id="modal-desc" class="text-gray-300 text-xs sm:text-sm leading-relaxed"></p>
+            <div class="pt-4 flex gap-3">
+                <a href="#contact" onclick="closeServiceModal()" class="btn-liquid-3d text-xs w-full text-center">Book This Service</a>
+                <button onclick="closeServiceModal()" class="btn-glass-3d text-xs">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            const container = document.getElementById('hero');
+            const canvas = document.getElementById('particle-canvas');
+            
+            if (!canvas) return;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.z = 5;
+
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            const particleCount = 100;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+
+            for (let i = 0; i < particleCount * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * 12;
+                positions[i + 1] = (Math.random() - 0.5) * 12;
+                positions[i + 2] = (Math.random() - 0.5) * 12;
+
+                colors[i] = 0.22;
+                colors[i + 1] = 0.74;
+                colors[i + 2] = 0.97;
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: 0.08,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.75,
+            });
+
+            const particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+
+            function animate() {
+                requestAnimationFrame(animate);
+                particles.rotation.x += 0.0008;
+                particles.rotation.y += 0.0012;
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+        });
+
+        let currentLang = 'en';
+        
+        const translations = {
+            ar: {
+                'brand-sub': 'التنظيف والضيافة',
+                'nav-home': 'الرئيسية',
+                'nav-about': 'من نحن',
+                'nav-services': 'خدماتنا',
+                'nav-packages': 'الباقات',
+                'nav-work': 'لماذا نحن',
+                'nav-contact': 'تواصل معنا',
+                'btn-book-now': 'احجز الآن',
+                'hero-badge': 'حلول التنظيف والضيافة في جميع أنحاء قطر',
+                'hero-title-1': 'خدمات تنظيف وضيافة احترافية',
+                'hero-title-2': 'يمكنك الثقة بها',
+                'hero-sub': 'حلول سكنية وتجارية وضيافة موثوقة يقدمها محترفون مدربون في كافة أنحاء قطر.',
+                'hero-btn-1': 'احجز خدمة',
+                'hero-btn-2': 'دردش عبر الواتساب',
+                'feat-1': 'كادر مدرب باحترافية',
+                'feat-2': 'مواعيد مرنة',
+                'feat-3': 'جودة خدمة مضمونة',
+                'feat-4': 'حجز سريع عبر الواتساب',
+                'about-tag': 'عن لمسة نظافة',
+                'about-title': 'دعم موثوق للمنازل والأعمال والضيافة',
+                'about-desc': 'تقدم لمسة نظافة للتنظيف حلول خدمات مرنة للمنازل، الشقق، الفلل، المكاتب، والمنشآت التجارية، الفنادق والمطاعم في قطر.',
+                'stat-1-title': 'فريق خبير',
+                'stat-1-sub': 'طاقم مؤهل وموثوق',
+                'stat-2-title': 'خيارات حجز مرنة',
+                'stat-2-sub': 'جداول مخصصة',
+                'stat-3-title': 'دعم العملاء',
+                'stat-3-sub': 'خدمة سريعة ومتجاوبة',
+                'stat-4-title': 'خدمات متكاملة',
+                'stat-4-sub': 'عناية شاملة',
+                'serv-tag': 'خدماتنا',
+                'serv-title': 'حلول احترافية لكل متطلبات التنظيف والضيافة',
+                'serv-sub': 'استكشف خدماتنا الأساسية المتخصصة في قطر.',
+                'why-tag': 'لماذا تختارنا',
+                'why-title': 'خدمة مصممة حسب مساحتك وجدولك وأولوياتك',
+                'why-sub': 'نجمع بين الخبرة والالتزام بالمواعيد والتواصل السهل.',
+                'pack-tag': 'الباقات الدورية',
+                'pack-title': 'باقات تنظيف أسبوعية وشهرية ومخصصة',
+                'pack-sub': 'اختر خطة جاهزة أو صمم باقتك المخصصة بالكامل.',
+                'step-tag': 'خطوات بسيطة',
+                'step-title': 'احجز خدمتك في 4 خطوات سهلة',
+                'step-sub': 'يتم إرسال طلبك تلقائياً إلى واتساب الحجز للتأكيد.',
+                'contact-tag': 'تواصل معنا',
+                'contact-title': 'تحدث مع فريق الحجز مباشرة',
+                'contact-sub': 'للاستفسارات والأسعار والعقود التجارية في قطر.',
+                'about-more': 'تعرف أكثر على خدماتنا'
+            },
+            en: {
+                'brand-sub': 'Cleaning & Hospitality',
+                'nav-home': 'Home',
+                'nav-about': 'About Us',
+                'nav-services': 'Services',
+                'nav-packages': 'Packages',
+                'nav-work': 'Why Us',
+                'nav-contact': 'Contact',
+                'btn-book-now': 'Book Now',
+                'hero-badge': 'Cleaning & Hospitality Solutions Across Qatar',
+                'hero-title-1': 'Professional Cleaning & Hospitality Services',
+                'hero-title-2': 'You Can Trust',
+                'hero-sub': 'Reliable residential, commercial, and hospitality solutions delivered by trained professionals across Qatar with unmatched precision and warmth.',
+                'hero-btn-1': 'Book a Service',
+                'hero-btn-2': 'Chat on WhatsApp (+974 5057 7872)',
+                'feat-1': 'Trained Professionals',
+                'feat-2': 'Flexible Scheduling',
+                'feat-3': 'Quality Guaranteed',
+                'feat-4': 'Fast WhatsApp Booking',
+                'about-tag': 'About Lamsat Nadhafa',
+                'about-title': 'Reliable Support for Homes, Businesses, and Hospitality Operations',
+                'about-desc': 'Lamsat Nadhafa Cleaning provides flexible service solutions for homes, apartments, villas, offices, commercial properties, hotels, restaurants, cafés, and events across Qatar.',
+                'stat-1-title': 'Skilled Team',
+                'stat-1-sub': 'Experienced & vetted staff',
+                'stat-2-title': 'Flexible Booking',
+                'stat-2-sub': 'Custom schedules & plans',
+                'stat-3-title': 'Customer Support',
+                'stat-3-sub': 'Helpful & responsive',
+                'stat-4-title': 'Multiple Services',
+                'stat-4-sub': 'All-in-one cleaning care',
+                'serv-tag': 'Our Services',
+                'serv-title': 'Professional Solutions for Every Cleaning & Hospitality Need',
+                'serv-sub': 'Explore our specialized core services, tailored for high standards across residences and commercial establishments in Qatar.',
+                'why-tag': 'Why Choose Us',
+                'why-title': 'Service Planned Around Your Space, Schedule & Priorities',
+                'why-sub': 'We combine trained expertise, punctual logistics, and effortless communication to give you complete peace of mind.',
+                'pack-tag': 'Recurring Packages',
+                'pack-title': 'Weekly, Monthly & Custom Cleaning Packages',
+                'pack-sub': 'Choose a ready-made plan or construct a completely dynamic package based on visits, hours, and staff required.',
+                'step-tag': 'Simple Process',
+                'step-title': 'Book Your Cleaning Service in 4 Simple Steps',
+                'step-sub': 'Your request is formatted automatically and sent directly to our WhatsApp booking desk for instant confirmation.',
+                'contact-tag': 'Get In Touch',
+                'contact-title': 'Speak with Our Dispatch Team Directly',
+                'contact-sub': 'For availability, custom event packages, commercial quotations, or recurring services across Qatar, reach out anytime.',
+                'about-more': 'Learn More About Our Operations'
+            }
+        };
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            document.body.style.fontFamily = currentLang === 'ar' ? 'Almarai, sans-serif' : 'Inter, sans-serif';
+            
+            document.getElementById('lang-label').innerText = currentLang === 'ar' ? 'English (EN)' : 'العربية (AR)';
+
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang] && translations[currentLang][key]) {
+                    el.innerText = translations[currentLang][key];
+                }
+            });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Stats counter trigger on scroll
+        let countersAnimated = false;
+        window.addEventListener('scroll', () => {
+            const aboutSection = document.getElementById('about');
+            if (!aboutSection || countersAnimated) return;
+
+            const rect = aboutSection.getBoundingClientRect();
+            if (rect.top <= window.innerHeight - 100) {
+                countersAnimated = true;
+                document.querySelectorAll('.counter').forEach(counter => {
+                    const target = +counter.getAttribute('data-target');
+                    let count = 0;
+                    const speed = target / 35;
+                    
+                    const updateCount = () => {
+                        count += speed;
+                        if (count < target) {
+                            counter.innerText = Math.ceil(count);
+                            setTimeout(updateCount, 30);
+                        } else {
+                            counter.innerText = target;
+                        }
+                    };
+                    updateCount();
+                });
+            }
+        });
+
+        // Package Switcher Logic
+        function switchPackageTab(tab) {
+            const tabWeekly = document.getElementById('tab-weekly');
+            const tabMonthly = document.getElementById('tab-monthly');
+            const tabBuilder = document.getElementById('tab-builder');
+            const grid = document.getElementById('packages-grid');
+            const builder = document.getElementById('builder-container');
+
+            [tabWeekly, tabMonthly, tabBuilder].forEach(b => {
+                b.className = 'px-5 py-2.5 rounded-xl transition-all text-gray-300 hover:text-white';
+            });
+
+            if (tab === 'weekly') {
+                tabWeekly.className = 'px-5 py-2.5 rounded-xl transition-all text-darkBg bg-lightBlue font-bold shadow-lg';
+                grid.classList.remove('hidden');
+                builder.classList.add('hidden');
+                document.getElementById('price-basic').innerText = 'QAR 180';
+                document.getElementById('price-family').innerText = 'QAR 450';
+                document.getElementById('price-luxury').innerText = 'QAR 950';
+            } else if (tab === 'monthly') {
+                tabMonthly.className = 'px-5 py-2.5 rounded-xl transition-all text-darkBg bg-lightBlue font-bold shadow-lg';
+                grid.classList.remove('hidden');
+                builder.classList.add('hidden');
+                document.getElementById('price-basic').innerText = 'QAR 680';
+                document.getElementById('price-family').innerText = 'QAR 1,650';
+                document.getElementById('price-luxury').innerText = 'QAR 3,400';
+            } else if (tab === 'builder') {
+                tabBuilder.className = 'px-5 py-2.5 rounded-xl transition-all text-darkBg bg-cyanNeon font-bold shadow-lg';
+                grid.classList.add('hidden');
+                builder.classList.remove('hidden');
+                updateCustomPackage();
+            }
+        }
+
+        function updateCustomPackage() {
+            const visits = parseInt(document.getElementById('input-visits').value);
+            const hours = parseInt(document.getElementById('input-hours').value);
+            const staff = parseInt(document.getElementById('input-staff').value);
+
+            document.getElementById('val-visits').innerText = visits + (visits === 1 ? ' Visit' : ' Visits');
+            document.getElementById('val-hours').innerText = hours + ' Hours';
+            document.getElementById('val-staff').innerText = staff + (staff === 1 ? ' Cleaner' : ' Cleaners');
+
+            const hourlyRate = 30;
+            const monthlyTotal = Math.round(visits * 4.33 * hours * staff * hourlyRate);
+
+            document.getElementById('calculated-price').innerHTML = `QAR ${monthlyTotal.toLocaleString()} <span class="text-xs sm:text-sm text-gray-400 font-normal">/ month</span>`;
+        }
+
+        function bookCustomPackage() {
+            const visits = document.getElementById('input-visits').value;
+            const hours = document.getElementById('input-hours').value;
+            const staff = document.getElementById('input-staff').value;
+            const text = encodeURIComponent(`Hello Lamsat Nadhafa, I would like to book a custom package: ${visits} visits/week, ${hours} hrs/visit, with ${staff} cleaners.`);
+            window.open(`https://wa.me/97450577872?text=${text}`, '_blank');
+        }
+
+        function openServiceModal(title, desc) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-desc').innerText = desc;
+            document.getElementById('service-modal').classList.remove('hidden');
+        }
+
+        function closeServiceModal() {
+            document.getElementById('service-modal').classList.add('hidden');
+        }
+
+        function handleWhatsAppSubmit(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('form-name').value;
+            const phone = document.getElementById('form-phone').value;
+            const service = document.getElementById('form-service').value;
+            const location = document.getElementById('form-location').value;
+            const date = document.getElementById('form-date').value;
+            const time = document.getElementById('form-time').value;
+            const notes = document.getElementById('form-notes').value;
+
+            const message = `*NEW BOOKING REQUEST - LAMSAT NADHAFA*%0A%0A` +
+                `*Name:* ${name}%0A` +
+                `*Phone:* ${phone}%0A` +
+                `*Service:* ${service}%0A` +
+                `*Location:* ${location}%0A` +
+                `*Date:* ${date}%0A` +
+                `*Time:* ${time}%0A` +
+                `*Notes:* ${notes || 'None'}`;
+
+            const whatsappUrl = `https://wa.me/97450577872?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
